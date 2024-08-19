@@ -27,6 +27,12 @@ function NumericRangeQuestionPreview({
     setAnswer(value);
   }
 
+  function onHandleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      onSubmitResult();
+    }
+  }
+
   function onSubmitResult() {
     if (answer === undefined) return;
     const result = numericRangeAnswer.resScoreFormula(answer);
@@ -37,7 +43,14 @@ function NumericRangeQuestionPreview({
     <div>
       <div>
         <div>{numericRangeQuestion.question}</div>
-        <Input type="text" name="answer" onChange={onHandleChange} />
+        <Input
+          autoFocus
+          type="text"
+          name="answer"
+          value={`${answer ? answer : ""}`}
+          onChange={onHandleChange}
+          onKeyDown={onHandleKeyDown}
+        />
       </div>
       <Button onClick={() => onSubmitResult()}>Submit</Button>
       {error && <div className="text-red-500">{error}</div>}

@@ -13,14 +13,14 @@ function VerbalRangeQuestionPreview({
   verbalRangeAnswer,
   onHandleResult,
 }: VerbalRangeQuestionProps) {
-  const [answer, setAnswer] = useState<string | undefined>(undefined);
+  const [answer, setAnswer] = useState<string>("");
   const [error, setError] = useState<string | undefined>(undefined);
 
   function onHandleChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
     if (value.trim() === "") {
       setError("Please enter a text");
-      setAnswer(undefined);
+      setAnswer("");
       return;
     }
     setError(undefined);
@@ -33,11 +33,24 @@ function VerbalRangeQuestionPreview({
     onHandleResult(result, verbalRangeQuestion.stat);
   }
 
+  function onHandleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      onSubmitResult();
+    }
+  }
+
   return (
     <div>
       <div>
         <div>{verbalRangeQuestion.question}</div>
-        <Input type="text" name="answer" onChange={onHandleChange} />
+        <Input
+          type="text"
+          name="answer"
+          autoFocus
+          value={answer}
+          onChange={onHandleChange}
+          onKeyDown={onHandleKeyDown}
+        />
       </div>
       <Button onClick={() => onSubmitResult()}>Submit</Button>
       {error && <div className="text-red-500">{error}</div>}

@@ -28,11 +28,6 @@ function TimedNonValueQuestionPreview({
     };
   }, [currTimestamp, startTimestamp]);
 
-  function onSubmitResult() {
-    const result = timedNonValueAnswer.resScoreFormula(timeElapsed.actual);
-    onHandleResult(result, timedNonValueQuestion.stat);
-  }
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrTimestamp(Date.now());
@@ -41,13 +36,30 @@ function TimedNonValueQuestionPreview({
     return () => clearInterval(interval);
   }, []);
 
+  function onSubmitResult() {
+    const result = timedNonValueAnswer.resScoreFormula(timeElapsed.actual);
+    onHandleResult(result, timedNonValueQuestion.stat);
+  }
+
+  function onHandleKeyDown(e: React.KeyboardEvent<HTMLButtonElement>) {
+    if (e.key === "Enter") {
+      onSubmitResult();
+    }
+  }
+
   return (
     <div>
       <div>{timeElapsed.formatted}</div>
       <div>
         <h1>{timedNonValueQuestion.question}</h1>
       </div>
-      <Button onClick={() => onSubmitResult()}>Submit</Button>
+      <Button
+        autoFocus
+        onKeyDown={onHandleKeyDown}
+        onClick={() => onSubmitResult()}
+      >
+        Submit
+      </Button>
     </div>
   );
 }

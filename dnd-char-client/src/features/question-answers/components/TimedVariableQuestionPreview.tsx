@@ -15,7 +15,7 @@ function TimedVerbalQuestionPreview({
 }: TimedVerbalQuestionProps) {
   const [currTimestamp, setCurrTimestamp] = useState(Date.now());
   const [startTimestamp, setStartTimestamp] = useState(Date.now());
-  const [answer, setAnswer] = useState<string | undefined>(undefined);
+  const [answer, setAnswer] = useState<string>("");
   const [error, setError] = useState<string | undefined>(undefined);
 
   const timeElapsed = useMemo(() => {
@@ -35,7 +35,7 @@ function TimedVerbalQuestionPreview({
     const value = e.target.value;
     if (value === undefined || value === "") {
       setError("Please enter an answer");
-      setAnswer(undefined);
+      setAnswer("");
       return;
     }
     setAnswer(value);
@@ -48,6 +48,12 @@ function TimedVerbalQuestionPreview({
       answer,
     );
     onHandleResult(result, timedVerbalQuestion.stat);
+  }
+
+  function onHandleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      onSubmitResult();
+    }
   }
 
   useEffect(() => {
@@ -63,7 +69,14 @@ function TimedVerbalQuestionPreview({
       <div>{timeElapsed.formatted}</div>
       <div>
         <h1>{timedVerbalQuestion.question}</h1>
-        <Input type="text" name="answer" onChange={onHandleChange} />
+        <Input
+          type="text"
+          name="answer"
+          autoFocus
+          value={answer}
+          onChange={onHandleChange}
+          onKeyDown={onHandleKeyDown}
+        />
       </div>
       <Button onClick={() => onSubmitResult()}>Submit</Button>
       {error && <div className="text-red-500">{error}</div>}

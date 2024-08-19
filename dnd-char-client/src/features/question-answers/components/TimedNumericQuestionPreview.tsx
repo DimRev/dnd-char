@@ -41,6 +41,14 @@ function TimedNumericQuestionPreview({
     setAnswer(value);
   }
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrTimestamp(Date.now());
+    }, 377);
+    setStartTimestamp(Date.now());
+    return () => clearInterval(interval);
+  }, []);
+
   function onSubmitResult() {
     if (answer === undefined) return;
     const result = timedNumericAnswer.resScoreFormula(
@@ -50,20 +58,25 @@ function TimedNumericQuestionPreview({
     onHandleResult(result, timedNumericQuestion.stat);
   }
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrTimestamp(Date.now());
-    }, 377);
-    setStartTimestamp(Date.now());
-    return () => clearInterval(interval);
-  }, []);
+  function onHandleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      onSubmitResult();
+    }
+  }
 
   return (
     <div>
       <div>{timeElapsed.formatted}</div>
       <div>
         <h1>{timedNumericQuestion.question}</h1>
-        <Input type="text" name="answer" onChange={onHandleChange} />
+        <Input
+          type="text"
+          name="answer"
+          autoFocus
+          value={`${answer ? answer : ""}`}
+          onChange={onHandleChange}
+          onKeyDown={onHandleKeyDown}
+        />
       </div>
       <Button onClick={() => onSubmitResult()}>Submit</Button>
       {error && <div className="text-red-500">{error}</div>}

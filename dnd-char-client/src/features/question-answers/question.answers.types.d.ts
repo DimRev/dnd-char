@@ -9,7 +9,15 @@ interface Answer<T extends AnswerTypes> {
   resScoreFormula: ResTimedScoreFormula<T>;
 }
 
-interface QuestionAnswer<T extends SpecificQuestion, U extends SpecificAnswer> {
+interface QuestionAnswer {
+  type: QuestionAnswerType;
+  question: SpecificQuestion;
+  answer: SpecificAnswer;
+}
+interface SpecificQuestionAnswer<
+  T extends SpecificQuestion,
+  U extends SpecificAnswer,
+> {
   type: QuestionAnswerType;
   question: T;
   answer: U;
@@ -30,27 +38,27 @@ type SpecificAnswer =
   | VerbalRangeAnswer;
 
 interface TimedNumericQA
-  extends QuestionAnswer<TimedNumericQuestion, TimedNumericAnswer> {
+  extends SpecificQuestionAnswer<TimedNumericQuestion, TimedNumericAnswer> {
   type: "timedNumeric";
 }
 
 interface TimedVerbalQA
-  extends QuestionAnswer<TimedVerbalQuestion, TimedVerbalAnswer> {
+  extends SpecificQuestionAnswer<TimedVerbalQuestion, TimedVerbalAnswer> {
   type: "timedVerbal";
 }
 
 interface NumericRangeQA
-  extends QuestionAnswer<NumericRangeQuestion, NumericRangeAnswer> {
+  extends SpecificQuestionAnswer<NumericRangeQuestion, NumericRangeAnswer> {
   type: "numericRange";
 }
 
 interface VerbalRangeQA
-  extends QuestionAnswer<VerbalRangeQuestion, VerbalRangeAnswer> {
+  extends SpecificQuestionAnswer<VerbalRangeQuestion, VerbalRangeAnswer> {
   type: "verbalRange";
 }
 
 interface TimedNonValueQA
-  extends QuestionAnswer<TimedNonValueQuestion, TimedNonValueAnswer> {
+  extends SpecificQuestionAnswer<TimedNonValueQuestion, TimedNonValueAnswer> {
   type: "timedNonValue";
 }
 
@@ -115,7 +123,7 @@ interface TimedNonValueAnswer extends Answer<undefined> {
 interface NumericRangeQuestion extends Question<number[]> {
   type: "numericRange";
   question: string;
-  currAnswer?: number[];
+  currAnswer?: number;
 }
 
 interface NumericRangeAnswer extends Answer<number[]> {
@@ -126,7 +134,7 @@ interface NumericRangeAnswer extends Answer<number[]> {
 interface VerbalRangeQuestion extends Question<string[]> {
   type: "verbalRange";
   question: string;
-  currAnswer?: string[];
+  currAnswer?: string;
 }
 
 interface VerbalRangeAnswer extends Answer<string[]> {
