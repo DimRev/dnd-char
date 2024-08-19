@@ -40,13 +40,13 @@ interface TimedVerbalQuestion extends Question {
 interface NumericRangeQuestion extends Question {
   type: "numericRange";
   question: string;
-  answerRanges: number[];
+  answer: number[];
   resFormula: (answer: number) => ResFormulaAnswer;
 }
 
 interface VerbalRangeQuestion extends Question {
   type: "verbalRange";
   question: string;
-  answerRanges: string[];
+  answer: string[];
   resFormula: (answer: string) => ResFormulaAnswer;
 }

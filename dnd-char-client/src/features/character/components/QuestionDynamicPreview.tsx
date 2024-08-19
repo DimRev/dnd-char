@@ -181,23 +181,23 @@ function NumericRangeQuestionPreview({
   numericRangeQuestion,
   onHandleResult,
 }: NumericRangeQuestionProps) {
-  const [answerIdx, setAnswerIdx] = useState<number | undefined>(undefined);
+  const [answer, setAnswer] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
 
   function onHandleChange(e: ChangeEvent<HTMLInputElement>) {
     const value = Number(e.target.value);
     if (Number.isNaN(value)) {
       setError("Please enter a number");
-      setAnswerIdx(undefined);
+      setAnswer(undefined);
       return;
     }
     setError(undefined);
-    setAnswerIdx(value);
+    setAnswer(value);
   }
 
   function onSubmitResult() {
-    if (answerIdx === undefined) return;
-    const result = numericRangeQuestion.resFormula(answerIdx);
+    if (answer === undefined) return;
+    const result = numericRangeQuestion.resFormula(answer);
     onHandleResult(result, numericRangeQuestion.stat);
   }
 
@@ -222,7 +222,36 @@ function VerbalRangeQuestionPreview({
   verbalRangeQuestion,
   onHandleResult,
 }: VerbalRangeQuestionProps) {
-  return <div>verbalRange</div>;
+  const [answer, setAnswer] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string | undefined>(undefined);
+
+  function onHandleChange(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    if (value.trim() === "") {
+      setError("Please enter a text");
+      setAnswer(undefined);
+      return;
+    }
+    setError(undefined);
+    setAnswer(value);
+  }
+
+  function onSubmitResult() {
+    if (answer === undefined) return;
+    const result = verbalRangeQuestion.resFormula(answer);
+    onHandleResult(result, verbalRangeQuestion.stat);
+  }
+
+  return (
+    <div>
+      <div>
+        <div>{verbalRangeQuestion.question}</div>
+        <Input type="text" name="answer" onChange={onHandleChange} />
+      </div>
+      <Button onClick={() => onSubmitResult()}>Submit</Button>
+      {error && <div className="text-red-500">{error}</div>}
+    </div>
+  );
 }
 
 export default QuestionDynamicPreview;
