@@ -18,7 +18,13 @@ type ResFormulaAnswer = -3 | -2 | -1 | 0 | 1 | 2 | 3;
 
 interface Question {
   stat: Stats;
-  type: "timedNumeric" | "timedVerbal" | "numericRange" | "verbalRange";
+  type:
+    | "timedNumeric"
+    | "timedVerbal"
+    | "numericRange"
+    | "verbalRange"
+    | "wpmTest"
+    | "mousePrecisionTest";
   answer: AnswerTypes;
   resFormula: ResFormulaType;
 }
@@ -49,4 +55,18 @@ interface VerbalRangeQuestion extends Question {
   question: string;
   answer: string[];
   resFormula: (answer: string) => ResFormulaAnswer;
+}
+
+interface WPMTestQuestion extends Question {
+  type: "wpmTest";
+  question: string; // The sentence or phrase the user needs to type
+  answer: string; // The correct sentence/phrase
+  resFormula: (userInput: string, elapsedTime: number) => ResFormulaAnswer;
+}
+
+interface MousePrecisionTestQuestion extends Question {
+  type: "mousePrecisionTest";
+  question: string; // The task, like dragging an object to a specific location
+  answer: number; // The distance or precision score
+  resFormula: (accuracy: number) => ResFormulaAnswer;
 }

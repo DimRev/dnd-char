@@ -254,4 +254,14 @@ function VerbalRangeQuestionPreview({
   );
 }
 
+type MousePrecisionTestProps = {
+  mousePrecisionTestQuestion: MousePrecisionTestQuestion;
+  onHandleResult: (result: ResFormulaAnswer, stat: Stats) => void;
+};
+
+function MousePrecisionTestPreview({
+  mousePrecisionTestQuestion,
+  onHandleResult,
+}: MousePrecisionTestProps) {}
+
 export default QuestionDynamicPreview;
