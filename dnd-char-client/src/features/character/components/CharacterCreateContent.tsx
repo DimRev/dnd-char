@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-
-import QuestionDynamicPreview from "./QuestionDynamicPreview";
+import { useMemo, useState } from "react";
 
 function CharacterCreateContent() {
   const [step, setStep] = useState(0);
-  const [modifiers, setModifiers] = useState<Record<Stats, number[]>>({
+  const [modifiers, setModifiers] = useState<Record<StatsTypes, number[]>>({
     str: [],
     dex: [],
     con: [],
@@ -90,7 +88,7 @@ function CharacterCreateContent() {
     return base_char;
   }, [modifiers]);
 
-  function onHandleResult(result: number, stat: Stats) {
+  function onHandleResult(result: number, stat: StatsTypes) {
     setModifiers((prev) => {
       const newModifiers = { ...prev };
       newModifiers[stat] = [...(newModifiers[stat] ?? []), result];
